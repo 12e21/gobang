@@ -198,8 +198,8 @@ bool checkForbidLong()
 
 
 		if(ifReverseEnd==false){
-			if((placedchess[0]-sequentIndex>=0)&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]]==placedchess[2])){
-				sequentIndex++;
+			if((placedchess[0]-ReverseIndex>=0)&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=6){
 					return true;
@@ -233,8 +233,8 @@ bool checkForbidLong()
 
 
 		if(ifReverseEnd==false){
-			if((placedchess[1]-sequentIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if((placedchess[1]-ReverseIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=6){
 					return true;
@@ -268,8 +268,8 @@ bool checkForbidLong()
 
 
 		if(ifReverseEnd==false){
-			if(((placedchess[0]-sequentIndex>=0)&&(placedchess[1]-sequentIndex>=0))&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if(((placedchess[0]-ReverseIndex>=0)&&(placedchess[1]-ReverseIndex>=0))&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=6){
 					return true;
@@ -302,8 +302,8 @@ bool checkForbidLong()
 
 
 		if(ifReverseEnd==false){
-			if(((placedchess[1]-sequentIndex>=0)&&(placedchess[0]+sequentIndex<tableGapCount))&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if(((placedchess[1]-ReverseIndex>=0)&&(placedchess[0]+ReverseIndex<tableGapCount))&&(chessSituation[placedchess[0]+ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=6){
 					return true;
@@ -335,6 +335,7 @@ bool checkForbidThree()
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 				
 			}else{
@@ -344,11 +345,12 @@ bool checkForbidThree()
 
 
 		if(ifReverseEnd==false){
-			if((placedchess[0]-sequentIndex>=0)&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]]==placedchess[2])){
-				sequentIndex++;
+			if((placedchess[0]-ReverseIndex>=0)&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 			}else{
 				ifReverseEnd=true;
@@ -370,6 +372,7 @@ bool checkForbidThree()
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 				
 			}else{
@@ -379,11 +382,12 @@ bool checkForbidThree()
 
 
 		if(ifReverseEnd==false){
-			if((placedchess[1]-sequentIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if((placedchess[1]-ReverseIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 			}else{
 				ifReverseEnd=true;
@@ -405,6 +409,7 @@ bool checkForbidThree()
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 				
 			}else{
@@ -414,11 +419,12 @@ bool checkForbidThree()
 
 
 		if(ifReverseEnd==false){
-			if(((placedchess[0]-sequentIndex>=0)&&(placedchess[1]-sequentIndex>=0))&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if(((placedchess[0]-ReverseIndex>=0)&&(placedchess[1]-ReverseIndex>=0))&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 			}else{
 				ifReverseEnd=true;
@@ -439,6 +445,7 @@ bool checkForbidThree()
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 				
 			}else{
@@ -448,11 +455,12 @@ bool checkForbidThree()
 
 
 		if(ifReverseEnd==false){
-			if(((placedchess[1]-sequentIndex>=0)&&(placedchess[0]+sequentIndex<tableGapCount))&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if(((placedchess[1]-ReverseIndex>=0)&&(placedchess[0]+ReverseIndex<tableGapCount))&&(chessSituation[placedchess[0]+ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=3){
 					continueThreeCount++;
+					break;
 				}
 			}else{
 				ifReverseEnd=true;
@@ -507,8 +515,8 @@ void checkWin(){
 
 
 		if(ifReverseEnd==false){
-			if((placedchess[0]-sequentIndex>=0)&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]]==placedchess[2])){
-				sequentIndex++;
+			if((placedchess[0]-ReverseIndex>=0)&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=5){
 					winner=placedchess[2];
@@ -544,8 +552,8 @@ void checkWin(){
 
 
 		if(ifReverseEnd==false){
-			if((placedchess[1]-sequentIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if((placedchess[1]-ReverseIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=5){
 					winner=placedchess[2];
@@ -581,8 +589,8 @@ void checkWin(){
 
 
 		if(ifReverseEnd==false){
-			if(((placedchess[0]-sequentIndex>=0)&&(placedchess[1]-sequentIndex>=0))&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if(((placedchess[0]-ReverseIndex>=0)&&(placedchess[1]-ReverseIndex>=0))&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=5){
 					winner=placedchess[2];
@@ -617,8 +625,8 @@ void checkWin(){
 
 
 		if(ifReverseEnd==false){
-			if(((placedchess[1]-sequentIndex>=0)&&(placedchess[0]+sequentIndex<tableGapCount))&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]-sequentIndex]==placedchess[2])){
-				sequentIndex++;
+			if(((placedchess[1]-ReverseIndex>=0)&&(placedchess[0]+ReverseIndex<tableGapCount))&&(chessSituation[placedchess[0]+ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+				ReverseIndex++;
 				continueCount++;
 				if(continueCount>=5){
 					winner=placedchess[2];
