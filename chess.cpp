@@ -1,6 +1,6 @@
 #include <graphics.h>       
 #include <conio.h>
-
+#include <iostream>
 
 //global params
 IMAGE img,whiteChessPic,blackChessPic;
@@ -15,6 +15,9 @@ int chessingSide=-1; // 1 represent white side , -1 represent black side
 int placedchess[3]={0,0,0}; // form 2 means row and column ,last num means chess(1 white ,2 black)
 int winnerTextPos[2]={460,50};
 char keyWord;
+int chessSituationRecord[300][15][15];
+int chessSituationRecordIndex=1;
+bool ifRegretChess=false;
 
 
 //status params
@@ -28,8 +31,11 @@ void drawCursor();
 void draw();
 void init();
 void getKey();
+void dealInput();
 void moveCursor();
 void placeChess();
+void storeChessSituation();
+void regretChess();
 bool checkForbidLong();
 bool checkForbidThree();
 void checkForbid();
@@ -105,6 +111,11 @@ void drawStatus(){
 	}else{
 		outtextxy(winnerTextPos[0],winnerTextPos[1],"winner: none");
 	}
+	if(ifRegretChess==true){
+		outtextxy(winnerTextPos[0],winnerTextPos[1]+20,"true");
+	}else{
+		outtextxy(winnerTextPos[0],winnerTextPos[1]+20,"false");
+	}
 }
 
 
@@ -120,6 +131,17 @@ void draw(){
 void getKey(){
 	keyWord=_getch();
 }
+
+void dealInput()
+{
+	if(keyWord=='b'||keyWord=='B'){
+		ifRegretChess=true;
+	}
+	moveCursor();
+
+}
+
+
 void moveCursor(){
 	switch(keyWord){
 		case 'W':
@@ -147,6 +169,7 @@ void moveCursor(){
 			}
 			break;
 
+
 	}
 }
 
@@ -169,8 +192,30 @@ void placeChess(){
 			}
 			chessingSide=-chessingSide;
 		}
+	}else{
+		placedchess[2]=0;
 	}
 }
+
+
+void storeChessSituation(){
+
+	if(placedchess[2]!=0){
+		memcpy(chessSituationRecord[chessSituationRecordIndex],chessSituation,sizeof(chessSituation));
+		chessSituationRecordIndex++;
+	}
+}
+
+void regretChess(){
+	if(ifRegretChess==true&&chessSituationRecordIndex>=2){
+		memcpy(chessSituation,chessSituationRecord[chessSituationRecordIndex-2],sizeof(chessSituation));
+		chessSituationRecordIndex--;
+		chessingSide=-chessingSide;
+		ifRegretChess=false;
+	}
+}
+
+
 bool checkForbidLong()
 {
 	if(placedchess[2]==2){
@@ -640,8 +685,10 @@ void checkWin(){
 }
 
 void processData(){
-		moveCursor();
+		dealInput();
 		placeChess();
+		storeChessSituation();
+		regretChess();
 		checkForbid();
 		if(winner==0){
 			checkWin();
