@@ -1,6 +1,8 @@
 #include <graphics.h>       
 #include <conio.h>
 #include <iostream>
+#include <fstream>
+using namespace std;
 
 //global params
 IMAGE img,whiteChessPic,blackChessPic;
@@ -21,6 +23,8 @@ bool ifRegretChess=false;
 bool ifAi=true;
 int aiSide=1;
 bool ifForbid=false;
+bool ifSaveEndgame=false;
+bool ifLoadEndgame=false;
 
 
 //status params
@@ -47,7 +51,8 @@ void checkForbid();
 void checkWin();
 void processData();
 void drawStatus();
-
+void saveEndgame();
+void loadEndgame();
 
 void main()
 {
@@ -139,6 +144,14 @@ void getKey(){
 
 void dealInput()
 {
+	if(keyWord=='r'||keyWord=='R')
+	{
+		ifSaveEndgame=true;
+	}
+	if(keyWord=='t'||keyWord=='T')
+	{
+		ifLoadEndgame=true;
+	}
 	if(keyWord=='b'||keyWord=='B'){
 		ifRegretChess=true;
 	}
@@ -1023,7 +1036,29 @@ void checkWin(){
 		}
 	}
 }
+void saveEndgame(){
+	ofstream outfile;
+	outfile.open("endgame.txt");
+	outfile << chessingSide <<endl;
+	for(int i=0;i<tableGapCount;i++){
+		for(int j=0;j<tableGapCount;j++){
+			outfile << chessSituation[i][j] << " ";
+		}
+		outfile<< endl;
+	}
+	outfile.close();
+}
 
+void loadEndgame(){
+	ifstream infile;
+	infile.open("endgame.txt");
+	infile >> chessingSide;
+	for(int i=0;i<tableGapCount;i++){
+		for(int j=0;j<tableGapCount;j++){
+			infile >> chessSituation[i][j];
+		}
+	}
+}
 void processData(){
 		dealInput();
 		if(ifAi&&chessingSide==aiSide){
@@ -1031,7 +1066,16 @@ void processData(){
 		}else{
 			placeChess();
 		}
-
+		if(ifSaveEndgame)
+		{
+			saveEndgame();
+			ifSaveEndgame=false;
+		}
+		if(ifLoadEndgame)
+		{
+			loadEndgame();
+			ifLoadEndgame=false;
+		}
 		storeChessSituation();
 		regretChess();
 		if(ifForbid){
