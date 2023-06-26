@@ -18,6 +18,9 @@ char keyWord;
 int chessSituationRecord[300][15][15];
 int chessSituationRecordIndex=1;
 bool ifRegretChess=false;
+bool ifAi=true;
+int aiSide=1;
+bool ifForbid=false;
 
 
 //status params
@@ -34,6 +37,8 @@ void getKey();
 void dealInput();
 void moveCursor();
 void placeChess();
+int checkLongPossible();
+void aiPlaceChess();
 void storeChessSituation();
 void regretChess();
 bool checkForbidLong();
@@ -174,7 +179,41 @@ void moveCursor(){
 }
 
 
+void aiPlaceChess(){
+	int maxRow=0;
+	int maxColumn=0;
+	int maxLong=0;
 
+	for(int i=0;i<tableGapCount;i++){
+		for(int j=0;j<tableGapCount;j++){
+			if(chessSituation[i][j]==0){
+				placedchess[0]=i;
+				placedchess[1]=j;
+				if(chessingSide==1){
+					placedchess[2]=1;
+				}else{
+					placedchess[2]=2;			
+				}
+				if(checkLongPossible()>maxLong){
+					maxRow=i;
+					maxColumn=j;
+					maxLong=checkLongPossible();
+				}
+			}
+		}
+	}
+	
+	placedchess[0]=maxRow;
+	placedchess[1]=maxColumn;
+	if(chessingSide==1){
+		placedchess[2]=1;
+	}else{
+		placedchess[2]=2;			
+	}
+	chessSituation[maxRow][maxColumn]=placedchess[2];
+
+	chessingSide=-chessingSide;
+}
 
 void placeChess(){
 	if(keyWord==' '){
@@ -532,7 +571,308 @@ void checkForbid(){
 	}
 
 }
+int checkLongPossible(){
+	int longPossibleContinue=0;
+	
+	bool ifFivePossible=false;
+	int continueCount=1;
+	int ifEnd=false;
+	int ifReverseEnd=false;
+	int sequentIndex=1;
+	int ReverseIndex=1;
+	
+	//row check
+	while(ifEnd==false||ifReverseEnd==false){
+		if(ifEnd==false){
+			if((placedchess[0]+sequentIndex<tableGapCount)&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]]==placedchess[2]||chessSituation[placedchess[0]+sequentIndex][placedchess[1]]==0)){
+				sequentIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+				
+			}else{
+				ifEnd=true;
+			}
+		}
 
+
+		if(ifReverseEnd==false){
+			if((placedchess[0]-ReverseIndex>=0)&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]]==placedchess[2]||chessSituation[placedchess[0]+sequentIndex][placedchess[1]]==0)){
+				ReverseIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+			}else{
+				ifReverseEnd=true;
+			}
+		}
+	}
+
+	
+	if(ifFivePossible==true){
+		int continueCount=1;
+		int ifEnd=false;
+		int ifReverseEnd=false;
+		int sequentIndex=1;
+		int ReverseIndex=1;
+
+		while(ifEnd==false||ifReverseEnd==false){
+			if(ifEnd==false){
+				if((placedchess[0]+sequentIndex<tableGapCount)&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]]==placedchess[2])){
+					sequentIndex++;
+					continueCount++;	
+				}else{
+					ifEnd=true;
+				}
+			}
+
+
+			if(ifReverseEnd==false){
+				if((placedchess[0]-ReverseIndex>=0)&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]]==placedchess[2])){
+					ReverseIndex++;
+					continueCount++;
+				}else{
+					ifReverseEnd=true;
+				}
+			}
+		}
+
+		if(continueCount>longPossibleContinue){
+			longPossibleContinue=continueCount;
+		}
+
+	}
+	
+
+
+	//column check
+	ifFivePossible=false;
+	continueCount=1;
+	ifEnd=false;
+	ifReverseEnd=false;
+	sequentIndex=1;
+	ReverseIndex=1;
+
+	while(ifEnd==false||ifReverseEnd==false){
+		if(ifEnd==false){
+			if((placedchess[1]+sequentIndex<tableGapCount)&&(chessSituation[placedchess[0]][placedchess[1]+sequentIndex]==placedchess[2]||chessSituation[placedchess[0]][placedchess[1]+sequentIndex]==0)){
+				sequentIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+				
+			}else{
+				ifEnd=true;
+			}
+		}
+
+
+		if(ifReverseEnd==false){
+			if((placedchess[1]-ReverseIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-ReverseIndex]==placedchess[2]||chessSituation[placedchess[0]][placedchess[1]+sequentIndex]==0)){
+				ReverseIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+			}else{
+				ifReverseEnd=true;
+			}
+		}
+	}
+
+
+	if(ifFivePossible==true){
+		int continueCount=1;
+		int ifEnd=false;
+		int ifReverseEnd=false;
+		int sequentIndex=1;
+		int ReverseIndex=1;
+		
+
+		while(ifEnd==false||ifReverseEnd==false){
+			if(ifEnd==false){
+				if((placedchess[1]+sequentIndex<tableGapCount)&&(chessSituation[placedchess[0]][placedchess[1]+sequentIndex]==placedchess[2])){
+					sequentIndex++;
+					continueCount++;
+				}else{
+					ifEnd=true;
+				}
+			}
+
+
+			if(ifReverseEnd==false){
+				if((placedchess[1]-ReverseIndex>=0)&&(chessSituation[placedchess[0]][placedchess[1]-ReverseIndex]==placedchess[2])){
+					ReverseIndex++;
+					continueCount++;
+				}else{
+					ifReverseEnd=true;
+				}
+			}
+		}
+
+		if(continueCount>longPossibleContinue){
+			longPossibleContinue=continueCount;
+		}
+
+	}
+
+
+
+	//slope check
+	ifFivePossible=false;
+	continueCount=1;
+	ifEnd=false;
+	ifReverseEnd=false;
+	sequentIndex=1;
+	ReverseIndex=1;
+
+	while(ifEnd==false||ifReverseEnd==false){
+		if(ifEnd==false){
+			if(((placedchess[0]+sequentIndex<tableGapCount)&&(placedchess[1]+sequentIndex<tableGapCount))&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]+sequentIndex]==placedchess[2]||chessSituation[placedchess[0]+sequentIndex][placedchess[1]+sequentIndex]==0)){
+				sequentIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+				
+			}else{
+				ifEnd=true;
+			}
+		}
+
+
+		if(ifReverseEnd==false){
+			if(((placedchess[0]-ReverseIndex>=0)&&(placedchess[1]-ReverseIndex>=0))&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2]||chessSituation[placedchess[0]+sequentIndex][placedchess[1]+sequentIndex]==0)){
+				ReverseIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+			}else{
+				ifReverseEnd=true;
+			}
+		}
+	}
+
+
+	if(ifFivePossible==true){
+		int continueCount=1;
+		int ifEnd=false;
+		int ifReverseEnd=false;
+		int sequentIndex=1;
+		int ReverseIndex=1;
+		
+		while(ifEnd==false||ifReverseEnd==false){
+			if(ifEnd==false){
+				if(((placedchess[0]+sequentIndex<tableGapCount)&&(placedchess[1]+sequentIndex<tableGapCount))&&(chessSituation[placedchess[0]+sequentIndex][placedchess[1]+sequentIndex]==placedchess[2])){
+					sequentIndex++;
+					continueCount++;		
+				}else{
+					ifEnd=true;
+				}
+			}
+
+
+			if(ifReverseEnd==false){
+				if(((placedchess[0]-ReverseIndex>=0)&&(placedchess[1]-ReverseIndex>=0))&&(chessSituation[placedchess[0]-ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+					ReverseIndex++;
+					continueCount++;
+				}else{
+					ifReverseEnd=true;
+				}
+			}
+		}
+
+		if(continueCount>longPossibleContinue){
+			longPossibleContinue=continueCount;
+		}
+
+	}
+
+
+	ifFivePossible=false;
+	continueCount=1;
+	ifEnd=false;
+	ifReverseEnd=false;
+	sequentIndex=1;
+	ReverseIndex=1;
+
+	while(ifEnd==false||ifReverseEnd==false){
+		if(ifEnd==false){
+			if(((placedchess[1]+sequentIndex<tableGapCount)&&(placedchess[0]-sequentIndex>=0))&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]+sequentIndex]==placedchess[2]||chessSituation[placedchess[0]-sequentIndex][placedchess[1]+sequentIndex]==0)){
+				sequentIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+				
+			}else{
+				ifEnd=true;
+			}
+		}
+
+
+		if(ifReverseEnd==false){
+			if(((placedchess[1]-ReverseIndex>=0)&&(placedchess[0]+ReverseIndex<tableGapCount))&&(chessSituation[placedchess[0]+ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2]||chessSituation[placedchess[0]-sequentIndex][placedchess[1]+sequentIndex]==0)){
+				ReverseIndex++;
+				continueCount++;
+				if(continueCount>=5){
+					ifFivePossible=true;
+					break;
+				}
+			}else{
+				ifReverseEnd=true;
+			}
+		}
+	}
+
+
+	if(ifFivePossible==true){
+		int continueCount=1;
+		int ifEnd=false;
+		int ifReverseEnd=false;
+		int sequentIndex=1;
+		int ReverseIndex=1;
+		
+		while(ifEnd==false||ifReverseEnd==false){
+			if(ifEnd==false){
+				if(((placedchess[1]+sequentIndex<tableGapCount)&&(placedchess[0]-sequentIndex>=0))&&(chessSituation[placedchess[0]-sequentIndex][placedchess[1]+sequentIndex]==placedchess[2])){
+					sequentIndex++;
+					continueCount++;
+				}else{
+					ifEnd=true;
+				}
+			}
+
+
+			if(ifReverseEnd==false){
+				if(((placedchess[1]-ReverseIndex>=0)&&(placedchess[0]+ReverseIndex<tableGapCount))&&(chessSituation[placedchess[0]+ReverseIndex][placedchess[1]-ReverseIndex]==placedchess[2])){
+					ReverseIndex++;
+					continueCount++;
+				}else{
+					ifReverseEnd=true;
+				}
+			}
+		}
+
+		if(continueCount>longPossibleContinue){
+			longPossibleContinue=continueCount;
+		}
+
+	}
+
+	return longPossibleContinue;
+}
 
 void checkWin(){
 	
@@ -686,10 +1026,17 @@ void checkWin(){
 
 void processData(){
 		dealInput();
-		placeChess();
+		if(ifAi&&chessingSide==aiSide){
+			aiPlaceChess();
+		}else{
+			placeChess();
+		}
+
 		storeChessSituation();
 		regretChess();
-		checkForbid();
+		if(ifForbid){
+			checkForbid();
+		}
 		if(winner==0){
 			checkWin();
 		}
