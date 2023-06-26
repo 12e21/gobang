@@ -121,11 +121,14 @@ void drawStatus(){
 	}else{
 		outtextxy(winnerTextPos[0],winnerTextPos[1],"winner: none");
 	}
-	if(ifRegretChess==true){
-		outtextxy(winnerTextPos[0],winnerTextPos[1]+20,"true");
+	if(ifAi==true){
+		outtextxy(winnerTextPos[0],winnerTextPos[1]+20,"AI(Y): TRUE");
 	}else{
-		outtextxy(winnerTextPos[0],winnerTextPos[1]+20,"false");
+		outtextxy(winnerTextPos[0],winnerTextPos[1]+20,"AI(Y): FALSE");
 	}
+	outtextxy(winnerTextPos[0],winnerTextPos[1]+40,"SAVE(R)");
+	outtextxy(winnerTextPos[0],winnerTextPos[1]+60,"LOAD(T)");
+	outtextxy(winnerTextPos[0],winnerTextPos[1]+80,"REGRET(B) shut down ai");
 }
 
 
@@ -144,6 +147,14 @@ void getKey(){
 
 void dealInput()
 {
+	if(keyWord=='y'||keyWord=='Y')
+	{
+		if(ifAi==true){
+			ifAi=false;
+		}else{
+			ifAi=true;
+		}
+	}
 	if(keyWord=='r'||keyWord=='R')
 	{
 		ifSaveEndgame=true;
@@ -263,6 +274,7 @@ void regretChess(){
 		memcpy(chessSituation,chessSituationRecord[chessSituationRecordIndex-2],sizeof(chessSituation));
 		chessSituationRecordIndex--;
 		chessingSide=-chessingSide;
+		winner=0;
 		ifRegretChess=false;
 	}
 }
@@ -1061,28 +1073,33 @@ void loadEndgame(){
 }
 void processData(){
 		dealInput();
-		if(ifAi&&chessingSide==aiSide){
-			aiPlaceChess();
-		}else{
-			placeChess();
-		}
-		if(ifSaveEndgame)
-		{
-			saveEndgame();
-			ifSaveEndgame=false;
-		}
-		if(ifLoadEndgame)
-		{
-			loadEndgame();
-			ifLoadEndgame=false;
-		}
-		storeChessSituation();
 		regretChess();
-		if(ifForbid){
-			checkForbid();
-		}
+
 		if(winner==0){
-			checkWin();
+			if(ifAi&&chessingSide==aiSide){
+				aiPlaceChess();
+			}else{
+				placeChess();
+			}
+			if(ifSaveEndgame)
+			{
+				saveEndgame();
+				ifSaveEndgame=false;
+			}
+			if(ifLoadEndgame)
+			{
+				loadEndgame();
+				ifLoadEndgame=false;
+			}
+			storeChessSituation();
+
+			if(ifForbid){
+				checkForbid();
+			}
+			if(winner==0){
+				checkWin();
+			}
 		}
+
 
 }
